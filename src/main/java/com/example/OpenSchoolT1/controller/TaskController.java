@@ -2,11 +2,9 @@ package com.example.OpenSchoolT1.controller;
 
 import com.example.OpenSchoolT1.dto.TaskRequestDTO;
 import com.example.OpenSchoolT1.dto.TaskResponseDTO;
-import com.example.OpenSchoolT1.mapper.TaskMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.OpenSchoolT1.service.TaskService;
-import com.example.OpenSchoolT1.entity.Task;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,32 +13,25 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskController {
 	private final TaskService taskService;
-	private final TaskMapper taskMapper;
 
-	public TaskController(TaskService taskService, TaskMapper taskMapper) {
+	public TaskController(TaskService taskService) {
 		this.taskService = taskService;
-		this.taskMapper = taskMapper;
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public TaskResponseDTO createTask(@RequestBody TaskRequestDTO taskDTO) {
-		Task task = taskMapper.toEntity(taskDTO);
-		Task savedTask = taskService.createTask(task);
-		return taskMapper.toDTO(savedTask);
+	public TaskResponseDTO createTask(@RequestBody TaskRequestDTO dto) {
+		return taskService.createTask(dto);
 	}
 
 	@GetMapping("/{id}")
 	public TaskResponseDTO getTaskById(@PathVariable Long id) {
-		Task task = taskService.getTaskById(id);
-		return taskMapper.toDTO(task);
+		return taskService.getTaskById(id);
 	}
 
 	@PutMapping("/{id}")
-	public TaskResponseDTO updateTask(@PathVariable Long id, @RequestBody TaskRequestDTO taskDTO) {
-		Task task = taskMapper.toEntity(taskDTO);
-		Task updatedTask = taskService.updateTask(id, task);
-		return taskMapper.toDTO(updatedTask);
+	public TaskResponseDTO updateTask(@PathVariable Long id, @RequestBody TaskRequestDTO dto) {
+		return taskService.updateTask(id, dto);
 	}
 
 	@DeleteMapping("/{id}")
@@ -51,9 +42,6 @@ public class TaskController {
 
 	@GetMapping
 	public List<TaskResponseDTO> getAllTasks() {
-		List<Task> tasks = taskService.getAllTasks();
-		return tasks.stream()
-				.map(taskMapper::toDTO)
-				.toList();
+		return taskService.getAllTasks();
 	}
 }

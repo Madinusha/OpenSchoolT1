@@ -14,10 +14,10 @@ import org.aspectj.lang.annotation.Around;
 @Component
 @Aspect
 public class LoggingAspect {
+	private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 	@Before("@annotation(com.example.OpenSchoolT1.annotation.Loggable)")
 	public void logBefore(JoinPoint joinPoint) {
-		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		logger.info("Before: {}.{}() with args = {}",
 				joinPoint.getSignature().getDeclaringTypeName(),
 				joinPoint.getSignature().getName(),
@@ -29,7 +29,6 @@ public class LoggingAspect {
 			throwing = "ex"
 	)
 	public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
-		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		logger.error("AfterThrowing in {}.{}() with exception = {}",
 				joinPoint.getSignature().getDeclaringTypeName(),
 				joinPoint.getSignature().getName(),
@@ -42,7 +41,6 @@ public class LoggingAspect {
 			returning = "result"
 	)
 	public void logAfterReturning(JoinPoint joinPoint, Object result) {
-		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		logger.info("AfterReturning: from {}.{}() with result = {}",
 				joinPoint.getSignature().getDeclaringTypeName(),
 				joinPoint.getSignature().getName(),
@@ -51,7 +49,6 @@ public class LoggingAspect {
 
 	@Around("@annotation(com.example.OpenSchoolT1.annotation.MeasureTime)")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		long start = System.currentTimeMillis();
 
 		try {
@@ -65,12 +62,7 @@ public class LoggingAspect {
 
 			return result;
 		} catch (Exception e) {
-			long executionTime = System.currentTimeMillis() - start;
-			logger.error("Around: {}.{}() failed after {} ms with exception = {}",
-					joinPoint.getSignature().getDeclaringTypeName(),
-					joinPoint.getSignature().getName(),
-					executionTime,
-					e.getMessage());
+			logger.error("Method failure", e);
 			throw e;
 		}
 	}
