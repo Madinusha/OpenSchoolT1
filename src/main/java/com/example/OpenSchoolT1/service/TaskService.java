@@ -5,6 +5,7 @@ import com.example.OpenSchoolT1.annotation.MeasureTime;
 import com.example.OpenSchoolT1.dto.TaskRequestDTO;
 import com.example.OpenSchoolT1.dto.TaskResponseDTO;
 import com.example.OpenSchoolT1.exceptions.TaskNotFoundException;
+import com.example.OpenSchoolT1.kafka.TaskStatusProducer;
 import com.example.OpenSchoolT1.mapper.TaskMapper;
 import com.example.OpenSchoolT1.repository.TaskRepository;
 import com.example.OpenSchoolT1.entity.Task;
@@ -18,6 +19,7 @@ import java.util.List;
 public class TaskService {
 	private final TaskRepository taskRepository;
 	private final TaskMapper taskMapper;
+	private final TaskStatusProducer taskStatusProducer;
 
 	@Loggable
 	@Transactional
@@ -41,11 +43,18 @@ public class TaskService {
 		Task existing = taskRepository.findById(id)
 				.orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
-		if (dto.getTitle() != null) existing.setTitle(dto.getTitle());
-		if (dto.getDescription() != null) existing.setDescription(dto.getDescription());
-		if (dto.getUserId() != null) existing.setUserId(dto.getUserId());
+		boolean statusChanged = !dto.getStatus().equals(existing.getStatus());
+
+		existing.setTitle(dto.getTitle());
+		existing.setDescription(dto.getDescription());
+		existing.setUserId(dto.getUserId());
+		existing.setStatus(dto.getStatus());
 
 		Task updated = taskRepository.save(existing);
+		if (statusChanged) {
+			taskStatusProducer.sendTaskUpdate(id, dto);
+		}
+
 		return taskMapper.toDTO(updated);
 	}
 

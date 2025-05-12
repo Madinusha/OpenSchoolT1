@@ -16,3 +16,36 @@ spring:
             hibernate:
                 format_sql: true
         open-in-view: false
+
+    kafka:
+        bootstrap-servers: localhost:29092
+        topic:
+            task-status-changes: task-status-changes
+            partitions: 3
+            replicas: 1
+        producer:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        consumer:
+            group-id: task-group
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: com.example.OpenSchoolT1.kafka.TaskDtoDeserializer
+
+    mail:
+        host: smtp.yandex.ru
+        port: 465
+        username: madinamalika19@yandex.ru
+        password: yvdpvtzxtlkpzdhj
+
+        protocol: smtp
+        properties:
+            mail:
+                smtp:
+                    ssl:
+                        enable: true
+                    starttls:
+                        enable: false
+logging:
+    level:
+        org.springframework.mail: DEBUG
+        org.eclipse.angus.mail: WARN
