@@ -2,11 +2,11 @@ package com.example.OpenSchoolT1.controller;
 
 import com.example.OpenSchoolT1.dto.TaskRequestDTO;
 import com.example.OpenSchoolT1.dto.TaskResponseDTO;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.example.OpenSchoolT1.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -20,7 +20,7 @@ public class TaskController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public TaskResponseDTO createTask(@RequestBody TaskRequestDTO dto) {
+	public TaskResponseDTO createTask(@RequestBody @Valid TaskRequestDTO dto) {
 		return taskService.createTask(dto);
 	}
 
@@ -30,7 +30,7 @@ public class TaskController {
 	}
 
 	@PutMapping("/{id}")
-	public TaskResponseDTO updateTask(@PathVariable Long id, @RequestBody TaskRequestDTO dto) {
+	public TaskResponseDTO updateTask(@PathVariable Long id, @RequestBody @Valid TaskRequestDTO dto) {
 		return taskService.updateTask(id, dto);
 	}
 

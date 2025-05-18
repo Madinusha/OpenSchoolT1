@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Table(name = "tasks")
 @Getter
 @Setter
@@ -18,4 +17,7 @@ public class Task {
 	private String title;
 	private String description;
 	private Long userId;
+
+	@Enumerated(EnumType.STRING)
+	private TaskStatus status;
 }
