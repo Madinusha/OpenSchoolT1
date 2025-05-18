@@ -14,11 +14,12 @@ import org.springframework.stereotype.Service;
 public class NotificationService {
 
 	private final JavaMailSender mailSender;
+	private final NotificationProperties notificationProperties;
 
 	public void sendTaskUpdateNotification(Long taskId, String newStatus, TaskRequestDTO dto) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("madinamalika19@yandex.ru");
-		message.setTo("madinamalika19@yandex.ru");
+		message.setFrom(notificationProperties.getFromEmail());
+		message.setTo(notificationProperties.getToEmail());
 		message.setSubject("Task Updated: " + taskId);
 		message.setText(String.format(
 				"Task %d updated:\nStatus: %s\nTitle: %s\nDescription: %s",

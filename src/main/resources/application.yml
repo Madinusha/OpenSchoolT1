@@ -35,7 +35,7 @@ spring:
         host: smtp.yandex.ru
         port: 465
         username: madinamalika19@yandex.ru
-        password: yvdpvtzxtlkpzdhj
+        password: ______________
 
         protocol: smtp
         properties:
@@ -45,6 +45,12 @@ spring:
                         enable: true
                     starttls:
                         enable: false
+
+app:
+    notification:
+        from-email: madinamalika19@yandex.ru
+        to-email: madinamalika19@yandex.ru
+
 logging:
     level:
         org.springframework.mail: DEBUG

@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Setter
 public class KafkaTopicsProperties {
 
-	private String taskStatusChanges;
+	private String taskStatusTopic;
 
 	@ConstructorBinding
-	public KafkaTopicsProperties(@Value("${spring.kafka.topic.task-status-changes}") String taskStatusChanges) {
-		this.taskStatusChanges = taskStatusChanges;
+	public KafkaTopicsProperties(@Value("${spring.kafka.topic.task-status-changes}") String taskStatusTopic) {
+		this.taskStatusTopic = taskStatusTopic;
 	}
 }
