@@ -1,7 +1,7 @@
 package com.example.OpenSchoolT1.service;
 
-import com.example.OpenSchoolT1.annotation.Loggable;
-import com.example.OpenSchoolT1.annotation.MeasureTime;
+import com.example.OpenSchoolT1Starter.annotation.Loggable;
+import com.example.OpenSchoolT1Starter.annotation.MeasureTime;
 import com.example.OpenSchoolT1.dto.TaskRequestDTO;
 import com.example.OpenSchoolT1.dto.TaskResponseDTO;
 import com.example.OpenSchoolT1.exceptions.TaskNotFoundException;
